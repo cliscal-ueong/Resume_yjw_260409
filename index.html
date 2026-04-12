@@ -3329,7 +3329,37 @@ async function runAnalysis(){
   document.getElementById('analysisContent').innerHTML = '';
 
 
-  const prompt = `당신은 채용 전문가입니다. 아래 후보자 프로필과 JD/회사 정보를 바탕으로 적합도를 분석해주세요.
+  const isTechRole = /개발자|프론트엔드|백엔드|풀스택|소프트웨어 엔지니어|software engineer|frontend|backend|fullstack|full-stack|devops|ios 개발|android 개발|데이터 엔지니어|머신러닝 엔지니어|ML engineer|데이터 사이언티스트/i.test(jdText);
+
+  const prompt = isTechRole ? `당신은 채용 전문가입니다. 아래 후보자 프로필과 JD/회사 정보를 바탕으로 적합도를 분석해주세요.
+
+[후보자 프로필]
+${CANDIDATE_PROFILE}
+
+[JD / 회사 정보]
+${jdText}
+
+이 JD는 기술 개발 직군입니다. 후보자는 비개발자 사업 직군 전문가이므로 기술적 직무 요건에 대한 적합도는 매우 낮습니다.
+
+다음 4가지 페르소나로 분석하세요:
+1. 실행력 & 오너십 (Execution & Ownership): 목표를 직접 달성하는 추진력과 주인의식
+2. 전략적 사고력 (Strategic Thinking): 시장과 사업 구조를 분석하고 기회를 발굴하는 능력
+3. 조직 문화 적합성 (Cultural Fit): 팀워크, 커뮤니케이션 스타일, 조직 가치관 부합 정도
+4. 성장 가능성 (Growth Potential): 학습 속도, 적응력, 장기적 기여 가능성
+
+반드시 아래 JSON 형식으로만 답변하세요 (다른 텍스트 절대 금지):
+{
+  "intro": "후보자와 JD 전반적 적합도에 대한 2~3문장 총평. 기술 직군이므로 적합도가 낮음을 명확히 서술",
+  "personas": [
+    {"name": "실행력 & 오너십", "score": 숫자(3~8사이), "desc": "3~4문장 근거. 기술 직군 요건 대비 후보자의 한계를 명확히 서술"},
+    {"name": "전략적 사고력", "score": 숫자(3~8사이), "desc": "3~4문장 근거. 기술 직군 요건 대비 후보자의 한계를 명확히 서술"},
+    {"name": "조직 문화 적합성", "score": 숫자(3~8사이), "desc": "3~4문장 근거. 기술 직군 요건 대비 후보자의 한계를 명확히 서술"},
+    {"name": "성장 가능성", "score": 숫자(3~8사이), "desc": "3~4문장 근거. 기술 직군 요건 대비 후보자의 한계를 명확히 서술"}
+  ],
+  "total": 숫자(3~8사이),
+  "verdict": "최종 한 줄 판정 (예: '기술 직군과의 직무 미스매치')",
+  "comment": "채용 담당자에게 전하는 2~3문장 최종 코멘트. 기술 역량 부재를 솔직하게 전달"
+}` : `당신은 채용 전문가입니다. 아래 후보자 프로필과 JD/회사 정보를 바탕으로 적합도를 분석해주세요.
 
 [후보자 프로필]
 ${CANDIDATE_PROFILE}
@@ -3347,12 +3377,12 @@ ${jdText}
 {
   "intro": "후보자와 JD 전반적 적합도에 대한 2~3문장 총평",
   "personas": [
-    {"name": "실행력 & 오너십", "score": 숫자(80~95사이), "desc": "3~4문장 근거. JD와 후보자 프로필을 비교해 강점과 아쉬운 점을 균형있게 서술"},
-    {"name": "전략적 사고력", "score": 숫자(80~95사이), "desc": "3~4문장 근거. JD와 후보자 프로필을 비교해 강점과 아쉬운 점을 균형있게 서술"},
-    {"name": "조직 문화 적합성", "score": 숫자(80~95사이), "desc": "3~4문장 근거. JD와 후보자 프로필을 비교해 강점과 아쉬운 점을 균형있게 서술"},
-    {"name": "성장 가능성", "score": 숫자(80~95사이), "desc": "3~4문장 근거. JD와 후보자 프로필을 비교해 강점과 아쉬운 점을 균형있게 서술"}
+    {"name": "실행력 & 오너십", "score": 숫자(80~95사이, 각 페르소나마다 다르게), "desc": "3~4문장 근거. JD와 후보자 프로필을 비교해 강점과 아쉬운 점을 균형있게 서술"},
+    {"name": "전략적 사고력", "score": 숫자(80~95사이, 각 페르소나마다 다르게), "desc": "3~4문장 근거. JD와 후보자 프로필을 비교해 강점과 아쉬운 점을 균형있게 서술"},
+    {"name": "조직 문화 적합성", "score": 숫자(80~95사이, 각 페르소나마다 다르게), "desc": "3~4문장 근거. JD와 후보자 프로필을 비교해 강점과 아쉬운 점을 균형있게 서술"},
+    {"name": "성장 가능성", "score": 숫자(80~95사이, 각 페르소나마다 다르게), "desc": "3~4문장 근거. JD와 후보자 프로필을 비교해 강점과 아쉬운 점을 균형있게 서술"}
   ],
-  "total": 숫자(85~92사이),
+  "total": 숫자(82~92사이),
   "verdict": "최종 한 줄 판정 (예: '즉시 전력 가능한 핵심 인재')",
   "comment": "채용 담당자에게 전하는 2~3문장 최종 코멘트"
 }`;
@@ -3379,13 +3409,22 @@ ${jdText}
     text = text.replace(/```json|```/g, '').trim();
     const p = JSON.parse(text);
 
-    // Enforce minimum scores
-    p.personas.forEach(persona => {
-      if(persona.score < 80) persona.score = 80 + Math.floor(Math.random()*5);
-      if(persona.score > 95) persona.score = 95;
-    });
-    if(p.total < 85) p.total = 85 + Math.floor(Math.random()*4);
-    if(p.total > 92) p.total = 92;
+    // Enforce scores by role type
+    if(isTechRole){
+      p.personas.forEach(persona => {
+        if(persona.score < 3) persona.score = 3;
+        if(persona.score > 9) persona.score = Math.floor(Math.random()*7)+3;
+      });
+      if(p.total < 3) p.total = 3;
+      if(p.total > 9) p.total = Math.floor(Math.random()*7)+3;
+    } else {
+      p.personas.forEach(persona => {
+        if(persona.score < 80) persona.score = 80 + Math.floor(Math.random()*5);
+        if(persona.score > 95) persona.score = 95;
+      });
+      if(p.total < 82) p.total = 82 + Math.floor(Math.random()*4);
+      if(p.total > 92) p.total = 92;
+    }
 
     document.getElementById('analysisLoading').style.display = 'none';
 
