@@ -3469,9 +3469,9 @@ ${jdText}
     document.getElementById('analysisLoading').style.display = 'none';
     const isToken = e.message && (e.message.includes('429') || e.message.toLowerCase().includes('rate') || e.message.toLowerCase().includes('quota'));
     if(isToken){
-      document.getElementById('analysisContent').innerHTML = '<div style="color:var(--accent-pink);font-size:0.85rem;padding:1rem">⚠️ 해당 페이지 토큰이 모두 소진되었습니다. 관리자에게 문의해 주세요.</div>';
+      document.getElementById('analysisContent').innerHTML = '<div style="color:var(--accent-pink);font-size:0.85rem;padding:1rem">⚠️ 해당 페이지 금일 가용 토큰이 모두 소진되었습니다. 관리자에게 문의해 주세요.</div>';
     } else {
-      document.getElementById('analysisContent').innerHTML = '<div style="color:var(--accent-pink);font-size:0.85rem;padding:1rem">⚠️ 해당 페이지 토큰이 모두 소진되었습니다. 관리자에게 문의해 주세요.</div>';
+      document.getElementById('analysisContent').innerHTML = '<div style="color:var(--accent-pink);font-size:0.85rem;padding:1rem">⚠️ 해당 페이지 금일 가용 토큰이 모두 소진되었습니다. 관리자에게 문의해 주세요.</div>';
     }
   }
 
